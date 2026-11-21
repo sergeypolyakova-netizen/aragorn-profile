@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Арагорн, сын Араторна — Горизонты: Диалог наук</title>
+
+<script>
+/* При каждом открытии страницы всегда включается тёмная тема */
+document.documentElement.setAttribute('data-theme', 'dark');
+</script>
+
+<style>
+/* ===== Анкета персонажа — оформление в стиле профиля автора ===== */
+
+:root{
+  --f-head:'Manrope','Segoe UI',Arial,sans-serif;
+  --f-body:'Golos Text','Segoe UI',Arial,sans-serif;
+  --f-mono:'JetBrains Mono',Consolas,'Courier New',monospace;
+  --on-accent:#0A1128;
+}
+:root[data-theme="dark"]{
+  --bg:#070B18; --bg2:#0A1128; --bg3:#0D1530;
+  --surface:rgba(232,236,244,.035);
+  --line:rgba(232,236,244,.1); --line2:rgba(232,236,244,.2);
+  --text:#E8ECF4; --muted:#8C96AF; --faint:#5A6480;
+  --cyan:#00E5FF; --amber:#FFB020; --magenta:#FF6EC7;
+  --gridc:rgba(232,236,244,.035);
+}
+:root[data-theme="light"]{
+  --bg:#EDF0F7; --bg2:#E8ECF4; --bg3:#DFE4EF;
+  --surface:rgba(10,17,40,.035);
+  --line:rgba(10,17,40,.12); --line2:rgba(10,17,40,.25);
+  --text:#0A1128; --muted:#4E586F; --faint:#7A85A0;
+  --cyan:#0087A3; --amber:#B36A00; --magenta:#C22E8F;
+  --gridc:rgba(10,17,40,.045);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--f-body);font-size:16px;line-height:1.65;overflow-x:hidden;
+  transition:background .3s ease,color .3s ease;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--gridc) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--gridc) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+h1,h2{font-family:var(--f-head);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;color:inherit;background:none;border:none;cursor:pointer}
+::selection{background:var(--amber);color:var(--on-accent)}
+
+.container{max-width:1100px;margin:0 auto;padding:0 clamp(18px,4vw,40px);position:relative;z-index:1}
+
+/* Шапка */
+.topbar{border-bottom:1px solid var(--line);background:var(--bg);position:relative;z-index:5}
+.topbar .container{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
+.topbar nav{display:flex;align-items:center;gap:8px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:12px;letter-spacing:.1em}
+.logo-mark{width:30px;height:30px;border:1px solid var(--line2);position:relative;flex:none;display:grid;place-items:center;font-weight:700;font-size:12px;color:var(--cyan);border-radius:2px}
+.logo-mark::after{content:'';position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;background:var(--amber)}
+.logo b{display:block;font-weight:700;white-space:nowrap}
+.logo small{display:block;color:var(--muted);font-size:10px;margin-top:1px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--line2);color:var(--muted);border-radius:2px;transition:.2s}
+.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+.chip svg{width:12px;height:12px}
+.tool-btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid var(--line2);border-radius:2px;color:var(--muted);font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;transition:.2s}
+.tool-btn:hover{color:var(--text);border-color:var(--cyan)}
+.tool-btn .ico{font-size:14px;line-height:1}
+:root[data-theme="dark"] .tool-btn .to-dark{display:none}
+:root[data-theme="light"] .tool-btn .to-light{display:none}
+
+/* Заголовок */
+.main{padding:56px 0 90px;position:relative;z-index:1}
+.sec-head{display:grid;grid-template-columns:210px 1fr;gap:28px;margin-bottom:40px;align-items:end}
+.sec-meta{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.14em;line-height:2;text-transform:uppercase}
+.sec-meta b{color:var(--amber);font-weight:500}
+.sec-title{font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.03em}
+@media(max-width:760px){.sec-head{grid-template-columns:1fr;gap:10px}}
+
+/* Профиль */
+.author-layout{display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start}
+.author-layout>*{min-width:0}
+@media(max-width:720px){.author-layout{grid-template-columns:1fr;gap:20px}}
+.author-photo{margin:0;aspect-ratio:3/4;position:relative;overflow:hidden;background:var(--bg3);border:1px solid var(--line2);border-radius:2px;display:grid;place-items:center}
+.author-photo .ph{font-family:var(--f-mono);font-size:2.4rem;letter-spacing:.1em;color:var(--faint)}
+.author-photo .pic{position:absolute;inset:0;background-size:cover;background-position:top center;background-repeat:no-repeat;transition:background-image .3s}
+:root[data-theme="dark"] .author-photo .pic{background-image:url("avatar-dark.jpg")}
+:root[data-theme="light"] .author-photo .pic{background-image:url("avatar-light.jpg")}
+@media(max-width:720px){.author-photo{max-width:240px}}
+
+.badge{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border:1px solid currentColor;border-radius:2px;vertical-align:middle;color:var(--cyan)}
+
+.fs{border:1px solid var(--line);background:var(--surface);margin-bottom:18px;border-radius:2px}
+.fs-head{padding:14px 20px;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.65}
+.fs-body{padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.fs-body.one{grid-template-columns:1fr}
+.cell{background:var(--bg3);border:1px solid var(--line);padding:10px 14px;font-size:14px;border-radius:2px;overflow-wrap:anywhere}
+.cell .k{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.bio{color:var(--text);font-size:14.5px;line-height:1.7;max-width:70ch}
+.empty{color:var(--muted);font-size:13.5px}
+
+.foot{border-top:1px solid var(--line2);padding:26px 0;position:relative;z-index:1}
+.foot p{font-family:var(--f-mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em}
+
+a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="container">
+    <a class="logo" href="index.html">
+      <span class="logo-mark">Г</span>
+      <span><b>ГОРИЗОНТЫ: ДИАЛОГ НАУК</b><small>персонаж · анкета</small></span>
+    </a>
+    <nav>
+      <a class="chip" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 12H4M11 5l-7 7 7 7"/></svg>
+        На главную
+      </a>
+      <button class="tool-btn" id="themeBtn" type="button" title="Сменить тему (T)">
+        <span class="ico to-light" aria-hidden="true">☀</span>
+        <span class="ico to-dark" aria-hidden="true">☾</span>
+        <span id="themeLabel">Светлая</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <div class="container">
+    <article aria-labelledby="name">
+      <header class="sec-head">
+        <div class="sec-meta">
+          <b>CHARACTER</b> / aragorn<br>
+          <span class="badge">Персонаж</span>
+        </div>
+        <h1 class="sec-title" id="name">Арагорн, сын Араторна</h1>
+      </header>
+
+      <div class="author-layout">
+        <figure class="author-photo">
+          <span class="ph" aria-hidden="true">А</span>
+          <div class="pic" role="img" aria-label="Арагорн, сын Араторна, наследник Исилдура"></div>
+        </figure>
+
+        <div>
+          <section class="fs" aria-labelledby="pos-h">
+            <h2 class="fs-head" id="pos-h">Титул и происхождение</h2>
+            <div class="fs-body">
+              <div class="cell"><span class="k">Титул</span>Король Гондора и Арнора (Элессар)</div>
+              <div class="cell"><span class="k">Происхождение</span>Дунэдайн, наследник Исилдура</div>
+              <div class="cell"><span class="k">Прозвища</span>Странник, Тельконтар, Элессар</div>
+              <div class="cell"><span class="k">Оружие</span>Андурил (перекованный Нарсил)</div>
+            </div>
+          </section>
+
+          <section class="fs" aria-labelledby="bio-h">
+            <h2 class="fs-head" id="bio-h">История персонажа</h2>
+            <div class="fs-body one">
+              <p class="bio">Арагорн — вождь следопытов Севера и последний наследник древнего рода Исилдура. Долгие годы он скрывал своё имя, сражаясь под личиной Странника, и служил Гондору и Рохану, не требуя награды. Как Тельконтар он воевал в армии Рохана и сражался в битвах за Средиземье. Пройдя через Братство Кольца, битву при Хельмовой Пади и битву на Пеленнорских полях, он повёл армию к Чёрным Вратам и после падения Саурона стал королём Гондора и Арнора под именем Элессар — «эльфийский камень». Женился на Арвен, дочери Элронда.</p>
+            </div>
+          </section>
+
+          <section class="fs" aria-labelledby="cont-h">
+            <h2 class="fs-head" id="cont-h">Связь с персонажем</h2>
+            <div class="fs-body one"><p class="empty">Любимый герой эпоса «Властелин колец»: пример верности долгу, скромности и мужества.</p></div>
+          </section>
+
+          <section class="fs" aria-labelledby="pubs-h">
+            <h2 class="fs-head" id="pubs-h">Ключевые деяния</h2>
+            <div class="fs-body one"><p class="empty">Братство Кольца · Битва при Хельмовой Пади · Пеленнорские поля · Чёрные Врата · Коронация в Минас-Тирите</p></div>
+          </section>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="container"><p>© Горизонты: Диалог наук · анкета персонажа</p></div>
+</footer>
+
+<script>
+/* Переключатель темы: кнопка в шапке или клавиша T */
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeBtn');
+  var label = document.getElementById('themeLabel');
+  function paint() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    label.textContent = dark ? 'Светлая' : 'Тёмная';
+    btn.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');
+  }
+  function toggle() {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    paint();
+  }
+  btn.addEventListener('click', toggle);
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 't' || e.key === 'T' || e.key === 'е' || e.key === 'Е') toggle();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
